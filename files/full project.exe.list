@@ -1,0 +1,183 @@
+EMU8086 GENERATED LISTING. MACHINE CODE <- SOURCE.
+ 
+full project.exe -- emu8086 assembler version: 4.08  
+ 
+[ 12/15/2021  --  5:08:52 PM ] 
+ 
+===================================================================================================
+[LINE]     LOC: MACHINE CODE                          SOURCE
+===================================================================================================
+ 
+[   1]        :                                       ;CAESAR CIPHER ENCRYPTION
+[   2]        :                                       .STACK
+[   3]        :                                       .MODEL SMALL
+[   4]        :                                       .DATA
+[   5]        :                                       
+[   6]    0100: 0A 0D 65 6E 74 65 72 20 61 20 70 6C   MSG1 DB 0ah,0dh ,'enter a plain text : $';;; 0ah and 0dh is endl;
+                61 69 6E 20 74 65 78 74 3A 20 24    
+[   7]    0117: 0A 0D 63 68 69 70 68 65 72 20 74 65   MSG2 DB 0ah,0dh,'chipher text after 3 shif left : $'
+                78 74 20 61 66 74 65 72 20 33 20 73 
+                68 69 66 20 6C 65 66 74 3A 20 24    
+[   8]    013A: 0A 0D 24                              NEWLINE DB 10,13,"$"
+[   9]    013D: 20 20 20 20 20 20 20 20 20 20 20 20   ARR1 DB 50 DUP (' ') ;;;input
+                20 20 20 20 20 20 20 20 20 20 20 20 
+                20 20 20 20 20 20 20 20 20 20 20 20 
+                20 20 20 20 20 20 20 20 20 20 20 20 
+                20 20                               
+[  10]    016F: 20 20 20 20 20 20 20 20 20 20 20 20   ARR2 DB 50 DUP (' '),'$' ;;; output
+                20 20 20 20 20 20 20 20 20 20 20 20 
+                20 20 20 20 20 20 20 20 20 20 20 20 
+                20 20 20 20 20 20 20 20 20 20 20 20 
+                20 20 24                            
+[  11]        :                                       .CODE
+[  12]        :                                       
+[  13]        :                                       main MACRO AL   ;;; a macro  like a procedures
+[  14]        :                                       
+[  15]        :                                       
+[  16]        :                                       CMP AL,'z'  ;;al=='z'
+[  17]        :                                       JA exit  ;;;; jump unsigned >
+[  18]        :                                       CMP AL,'A';; al=='A'
+[  19]        :                                       JB exit   ;;;; jump unsigned <
+[  20]        :                                       CMP AL,'Z'    ;;;  al=='Z'
+[  21]        :                                       JE decrease    ;;  jump signed ==
+[  22]        :                                       CMP AL,'z'    ;;;; cmp al=='z'
+[  23]        :                                       JE decrease  ;;;; singned ==
+[  24]        :                                       CMP AL,'Y'    ;;; al=='Y'
+[  25]        :                                       JE decrease   ;;;
+[  26]        :                                       CMP AL,'y'     ;; al==='Y'
+[  27]        :                                       JE decrease
+[  28]        :                                       CMP AL,'X'   ;;; al=='X'
+[  29]        :                                       JE decrease
+[  30]        :                                       CMP AL,'x'  ;;;;; al=='x'
+[  31]        :                                       JE decrease
+[  32]        :                                       
+[  33]        :                                       add al,3     ;;; left shift 3 bit
+[  34]        :                                       JMP exit
+[  35]        :                                       
+[  36]        :                                       decrease:
+[  37]        :                                       SUB AL,23   ;;; al=al-23
+[  38]        :                                       JMP exit
+[  39]        :                                       
+[  40]        :                                       exit:
+[  41]        :                                       endm
+[  42]        :                                       
+[  43]        :                                       
+[  44]    01B0: B8 10 00                              MOV AX,@DATA
+[  45]    01B3: 8E D8                                 MOV DS,AX
+[  46]        :                                       
+[  47]    01B5: BE 3D 00                              LEA SI,ARR1   ;;;;si=arr1
+[  48]    01B8: BF 6F 00                              LEA DI,ARR2     ;;;di=arr2
+[  49]        :                                       
+[  50]        :                                       
+[  51]        :                                       ;PRINT MSG1
+[  52]    01BB: BA 00 00                              LEA DX,MSG1
+[  53]    01BE: B4 09                                 MOV AH,09
+[  54]    01C0: CD 21                                 INT 21H
+[  55]        :                                       
+[  56]    01C2: B9 32 00                              MOV CX,50   ;NUMBER OF CHARACTER TO input
+[  57]        :                                       
+[  58]    01C5:                                       INPUT:
+[  59]        :                                       
+[  60]    01C5: B4 01                                 MOV AH,01 ;;;;read a charcter
+[  61]    01C7: CD 21                                 INT 21H
+[  62]    01C9: 88 04                                 MOV [SI],AL  ;;; content of si=al
+[  63]        :                                       
+[  64]    01CB: 3C 0D                                 CMP AL,0DH
+[  65]    01CD: 74 03                                 JE  INPUTE
+[  66]        :                                       
+[  67]    01CF: 46                                    INC SI      ;; si++
+[  68]    01D0: E2 F3                                 LOOP INPUT
+[  69]    01D2:                                       INPUTE:
+[  70]    01D2: BA 00 00                              MOV DX,0000 ;;dx=0000
+[  71]    01D5: B9 32 00                              MOV CX,50     ;;;cs=1
+[  72]    01D8: BE 3D 00                              LEA SI,ARR1   ;;;si=arr1
+[  73]        :                                       
+[  74]    01DB:                                       OUTPUT:  ;;; output label
+[  75]    01DB: 8A 04                                 MOV AL,[SI]   ;;; al=content si
+[  76]    01DD: 3C 0D                                 CMP AL,0DH
+[  77]    01DF: 74 2E                                 JE OUTPUTE
+[  78]    01E1: 3C 7A 77 24 3C 41 72 20 3C 5A 74 18   main AL   ;;;;call subroutine
+                3C 7A 74 14 3C 59 74 10 3C 79 74 0C 
+                3C 58 74 08 3C 78 74 04 04 03 EB 04 
+                2C 17 EB 00                         
+[  79]    0209: 88 05                                 MOV [DI],AL    ;;; content di=al
+[  80]    020B: 46                                    INC SI    ;;;si++
+[  81]    020C: 47                                    INC DI    ;;; di++
+[  82]    020D: E2 CC                                 LOOP OUTPUT
+[  83]    020F:                                       OUTPUTE:
+[  84]        :                                       
+[  85]        :                                       ;------clear screen ------------
+[  86]    020F: B4 06                                 mov ah,6
+[  87]    0211: B0 00                                 mov al,0
+[  88]    0213: B1 00                                 mov cl ,0
+[  89]    0215: B5 00                                 mov ch,0
+[  90]    0217: B2 4F                                 mov dl,4fh
+[  91]    0219: B6 18                                 mov dh ,18h
+[  92]    021B: B7 02                                 mov bh ,2
+[  93]    021D: CD 10                                 int 10h
+[  94]        :                                       
+[  95]        :                                       ;---------center screean output---------
+[  96]    021F: B4 02                                 mov ah,2
+[  97]    0221: B7 00                                 mov bh,0
+[  98]    0223: B2 27                                 mov dl,27h;mid-point of colums
+[  99]    0225: B6 0C                                 mov dh,0ch;mid-poin of rows
+[ 100]    0227: CD 10                                 int 10h
+[ 101]        :                                       ;------------------
+[ 102]        :                                       
+[ 103]    0229: BA 17 00                              LEA DX,MSG2
+[ 104]    022C: B4 09                                 MOV AH,09
+[ 105]    022E: CD 21                                 INT 21H
+[ 106]    0230: BA 6F 00                              LEA DX,ARR2  ;;dx=arr2
+[ 107]    0233: B4 09                                 MOV AH,09
+[ 108]    0235: CD 21                                 INT 21H
+[ 109]    0237: B4 4C                                 MOV AH,4CH
+[ 110]    0239: CD 21                                 INT 21H
+[ 111]        :                                       
+[ 112]        :                                       end   ;;end a program
+[ 113]        :                                       
+[ 114]        :                                       
+ 
+===================================================================================================
+ 
+EXE HEADER - bytes from 0000 to 01FF inclusive.
+
+0000: 4D      -   exe signature (M)
+0001: 5A      -   exe signature (Z)
+0002: 3B      -   bytes on last page (l.byte)
+0003: 00      -   bytes on last page (h.byte)
+0004: 03      -   512 byte pages in file (l.byte)
+0005: 00      -   512 byte pages in file (h.byte)
+0006: 01      -   relocations (l.byte)
+0007: 00      -   relocations (h.byte)
+0008: 20      -   paragraphs in header (l.byte)
+0009: 00      -   paragraphs in header (h.byte)
+000A: 00      -   minimum memory (l.byte)
+000B: 00      -   minimum memory (h.byte)
+000C: FF      -   maximum memory (l.byte)
+000D: FF      -   maximum memory (h.byte)
+000E: 00      -   SS - stack segment (l.byte)
+000F: 00      -   SS - stack segment (h.byte)
+0010: 00      -   SP - stack pointer (l.byte)
+0011: 01      -   SP - stack pointer (h.byte)
+0012: 2C      -   check sum (l.byte)
+0013: 30      -   check sum (h.byte)
+0014: 00      -   IP - instruction pointer (l.byte)
+0015: 00      -   IP - instruction pointer (h.byte)
+0016: 1B      -   CS - code segment (l.byte)
+0017: 00      -   CS - code segment (h.byte)
+0018: 1E      -   relocation table adress (l.byte)
+0019: 00      -   relocation table adress (h.byte)
+001A: 00      -   overlay number (l.byte)
+001B: 00      -   overlay number (h.byte)
+001C: 01      -   signature (l.byte)
+001D: 00      -   signature (h.byte)
+001E: 01      -   relocation table - offset inside segment (l.byte)
+001F: 00      -   relocation table - offset inside segment (h.byte)
+0020: 1B      -   relocation table - segment anchor (l.byte)
+0021: 00      -   relocation table - segment anchor (h.byte)
+0022 to 01FF  -   reserved relocation area  (00) 
+
+
+
+
+===================================================================================================

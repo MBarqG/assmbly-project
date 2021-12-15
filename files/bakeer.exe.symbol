@@ -1,0 +1,20 @@
+< THE SYMBOL TABLE >  bakeer.exe  --  emu8086 assembler version: 4.08 
+===================================================================================================
+Name                     	Offset    	Size      	Type      	Segment   
+===================================================================================================
+STACK                    	00000     	-5        	SEGMENT   	(ITSELF)  
+DATA                     	00010     	-5        	SEGMENT   	(ITSELF)  
+MSG1                     	00000     	1         	VAR       	data      
+MSG2                     	00017     	1         	VAR       	data      
+NEWLINE                  	0003A     	1         	VAR       	data      
+ARR1                     	0003D     	1         	VAR       	data      
+ARR2                     	0006F     	1         	VAR       	data      
+CODE                     	0001B     	-5        	SEGMENT   	(ITSELF)  
+INPUT                    	00015     	-1        	LABEL     	code      
+OUTPUT                   	00027     	-1        	LABEL     	code      
+DECREASE                 	0004D     	-1        	LABEL     	code      
+EXIT                     	00051     	-1        	LABEL     	code      
+===================================================================================================
+[ 12/15/2021  --  4:22:35 PM ] 
+< END >
+ 
