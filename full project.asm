@@ -3,8 +3,8 @@
 .MODEL SMALL
 .DATA
 
-MSG1 DB 0ah,0dh ,'enter a plain text : $';;; 0ah and 0dh is endl;
-MSG2 DB 0ah,0dh,'chipher text after 3 shif left : $'
+MSG1 DB 0ah,0dh ,'enter a plain text max of 50 charcters : $'
+MSG2 DB 0ah,0dh,'chipher text : $'
 MSG3 DB 'first number between 0-7: $'
 MSG4 DB 'second number between 0-7: $'
 ARR1 Dw 50 DUP (' ') ;;;input
@@ -89,7 +89,7 @@ endm
      
     MOV AH,01 ;;;;read a charcter
     INT 21H
-    sub ax,48
+    sub ax,48 ;turn from char to number
     mov NUM1,ax
 
     LEA DX,MSG4 ;third massage
@@ -98,10 +98,10 @@ endm
 
     MOV AH,01 ;;;;read a charcter
     INT 21H
-    sub ax,48
+    sub ax,48 ;turn from char to number
     mov NUM2,ax
      
-    
+    ;load incriped array for colom trasformation
 lea si,arr2
 lea di,arr2
     mov i,0
@@ -110,6 +110,7 @@ lea di,arr2
        mov bx,NUM2
        add si,ax
        add di,bx
+       ;swap
        mov dl,[si]
        mov dh,[di]
        mov [di],dl
@@ -118,10 +119,10 @@ lea di,arr2
 inc i                      
 jbe next_i
 
-
+;load incriped array for rwo trasformation
 lea si,arr2
 lea di,arr2
-    mul NUM1,7
+    mul NUM1,7 ; mul by 7 to find each row
     mul NUM2,7     
     mov ax,NUM1
     mov bx,NUM2
@@ -129,6 +130,7 @@ lea di,arr2
     add di,bx
     mov j,0
     next_j:
+    ;swap with incrmending untill end of each rwo
     mov cx,j
     mov dl,[si]
     mov dh,[di]
