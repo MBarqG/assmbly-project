@@ -172,4 +172,4 @@ lea di,arr2
      MOV AH,4CH
      INT 21H 
      
-     end   ;;end a program
+     end   ;;end a prograg
